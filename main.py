@@ -99,7 +99,7 @@ fig = go.Figure(data=[go.Sankey(
         pad=18,
         thickness=16,
         line=dict(color="rgba(0,0,0,0.25)", width=0.5),
-        label=[f"{n}" for n in nodes],
+        label=[f"{n}<br>${d[n]:,}M" for n in nodes],
         color=node_colors
     ),
     link=dict(
