@@ -116,8 +116,5 @@ fig.update_layout(
     height=650
 )
 
-fig.show()
-
-
 if __name__ == "__main__":
-    main()
+    fig.show()
