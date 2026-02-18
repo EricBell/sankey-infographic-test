@@ -1,40 +1,13 @@
-
+import json
+import sys
 import plotly.graph_objects as go
 
-YEAR = "Q2_FY26"  # change to "Q2_FY25"
+DATA_FILE = sys.argv[1] if len(sys.argv) > 1 else "data/PANW_Q2_FY26.json"
 
-data = {
-    "Q2_FY26": {
-        "Product revenue": 514,
-        "Subscription & support revenue": 2080,
-        "Total revenue": 2594,
-        "Cost of revenue": 685,
-        "Gross profit": 1909,
-        "Sales & marketing": 823,
-        "R&D": 511,
-        "G&A": 178,
-        "Operating income": 397,
-        "Other income, net": 152,
-        "Provision for income taxes": 117,
-        "Net income": 432,
-    },
-    "Q2_FY25": {
-        "Product revenue": 421,
-        "Subscription & support revenue": 1836,
-        "Total revenue": 2257,
-        "Cost of revenue": 599,
-        "Gross profit": 1658,
-        "Sales & marketing": 758,
-        "R&D": 505,
-        "G&A": 154,
-        "Operating income": 241,
-        "Other income, net": 85,
-        "Provision for income taxes": 59,
-        "Net income": 267,
-    }
-}
+with open(DATA_FILE) as f:
+    d = json.load(f)
 
-d = data[YEAR]
+title = d.pop("title", DATA_FILE)
 
 nodes = [
     "Product revenue",
@@ -71,7 +44,6 @@ source = [idx[s] for s, t, v in links]
 target = [idx[t] for s, t, v in links]
 value  = [v for s, t, v in links]
 
-# Simple color scheme similar to the infographic:
 node_colors = [
     "#2f2f2f", "#2f2f2f", "#000000",  # revenue components + total
     "#b22222",                         # cost
@@ -86,15 +58,15 @@ node_colors = [
 link_colors = []
 for s, t, v in links:
     if t in ["Cost of revenue", "Sales & marketing", "R&D", "G&A", "Provision for income taxes"]:
-        link_colors.append("rgba(178,34,34,0.45)")  # red-ish
+        link_colors.append("rgba(178,34,34,0.45)")
     elif t in ["Gross profit", "Operating income", "Other income, net", "Net income"]:
-        link_colors.append("rgba(46,125,50,0.45)")  # green-ish
+        link_colors.append("rgba(46,125,50,0.45)")
     else:
-        link_colors.append("rgba(60,60,60,0.45)")   # gray for revenue build
+        link_colors.append("rgba(60,60,60,0.45)")
 
 fig = go.Figure(data=[go.Sankey(
     arrangement="snap",
-    textfont=dict(color="black", shadow="none",size=18, family="Arial"),
+    textfont=dict(color="black", shadow="none", size=18, family="Arial"),
     node=dict(
         pad=18,
         thickness=16,
@@ -111,7 +83,7 @@ fig = go.Figure(data=[go.Sankey(
 )])
 
 fig.update_layout(
-    title=f"PANW GAAP Income Statement Sankey — {YEAR.replace('_', ' ')}",
+    title=title,
     font=dict(size=12, family="Arial", color="black"),
     width=1200,
     height=650
