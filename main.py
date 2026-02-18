@@ -94,6 +94,7 @@ for s, t, v in links:
 
 fig = go.Figure(data=[go.Sankey(
     arrangement="snap",
+    textfont=dict(color="black", shadow="none",size=18, family="Arial"),
     node=dict(
         pad=18,
         thickness=16,
@@ -111,7 +112,7 @@ fig = go.Figure(data=[go.Sankey(
 
 fig.update_layout(
     title=f"PANW GAAP Income Statement Sankey — {YEAR.replace('_', ' ')}",
-    font=dict(size=12, family="Arial"),
+    font=dict(size=12, family="Arial", color="black"),
     width=1200,
     height=650
 )
